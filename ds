@@ -1,0 +1,37 @@
+# Docer Swarm deplpyment
+	
+	Manager-
+		- Docker installation 
+		- Docker swarm init
+		- Docker login 
+		- Docker build
+		- Docker push
+	
+	Node 1 and Node 2-
+		- Docker installation
+		- Docker join (using token)
+		- Docker login 
+
+	Manager-
+		- create docker service.[docker service create --name my-web-app -p 80:80 my-web-image]
+    - docker service/node ls
+
+
+
+  #script
+
+  #!/bin/bash
+    docker stop $(docker ps -aq)
+    docker rm $(docker ps -aq)
+    docker rmi $(docker images)
+    docker build -t bhangalehemant/newassignment .
+    docker login -u hgb3869@gmail.com -p Hemant@kce5106
+    ssh admin@IP -i <file> << EOF
+    ip 
+    whoami
+    docker ps -a
+    docker stop hemant
+    docker rmi hemant
+    docker rmi bhangalehemant/newassignment
+    docker pull bhangalehemant/newassignment
+    docker run --name hemant -d -p 80:80 bhangalehemant/newassignment
