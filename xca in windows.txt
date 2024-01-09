@@ -1,0 +1,25 @@
+install xca
+	create database
+	create template
+	create rootca private key
+	create rootca certificate
+	create subca private key
+	create subca certificate
+	create webserver private key
+	create webserver certificate
+	configure apache
+	export rootca certificate
+	add rootca certificates to trusted root certification authorities
+	configure name resolution 
+	test and connect to the secure site
+
+
+STEPS:-
+	
+	- create a new database(Empty template)and 
+	fill information comman name keep empty
+	because comman name different in certificate
+	
+	create private key for rooca and change name 'RootCa private key'
+
+	

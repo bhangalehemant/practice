@@ -1,0 +1,52 @@
+IN RootCA
+	
+	-make dir in rooca
+	-mkdir -p certs crt newcerts private subca/csr subca/certs
+	-chmod 700 private/
+	-create ca database
+		touch index.txt index.txt.attr
+	-echo 1000 > serial
+	-echo 1000 > crlnumber
+	-download conf file
+	-generate private key for rootca
+		openssl genrsa -aes256 -out private/ca.key.pem 4096
+		chmod 400 ca.key.pem 
+	-create certificate
+		openssl req -config rootca.cnf -key private/ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/ca.certs.pem
+
+IN SubCA
+	
+	- mkdir subca
+	- in subca
+		mkdir certs crl  csr newcerts private
+	- chmod 700 private
+	- touch index.txt index.txt.attr
+	- echo 1000 > serial
+	- echo 1000 > crlnumber
+	- download cnf file
+	- edit cnf file
+	- generate subca private key
+		openssl renrsa -aes256 -out private/subca.key.pem 4096
+		chmod 400 subca.key.pem
+	- create csr
+		openssl req -config subca.cnf -new -sha256 -key private/subca.key.pem -out csr/subca.csr.pem
+	- copy csr file from subca to rootca ca/subca/csr/
+	- go to rootca
+		openssl ca -config rootca.cnf -extensions v3_intermediate_ca -days 3650 -notext -md sha256 -in subca/csr/subca.csr.pem -out subca/certs/subca.cert.pem
+	-copy subca cert to subca
+
+IN Webserver
+
+	- mkdir certs
+	- download subca.cnf
+	- generate private key
+		openssl genrsa -out www.shuharilabs.local.key.pem 2048
+	- generate csr
+		openssl req -config subca.cnf -key www.shuharilabs.local.key.pem -new -sha256 -out www.shuharilabs.local.csr.pem
+		(org name=shuhari labs unit name= infosec. common name= site name)
+	- copy webserver csr to subca in csr dir
+	-go to subca
+		openssl ca -config subca.cnf -extensions server_cert -days 375 -notext -md sha256  -in csr/www.shuharilabs.local.csr.pem -out certs/www.shuharilabs.local.cert.pem
+	-create bundle of 3 certificates
+	- configure apache2 
+	 

@@ -1,0 +1,8 @@
+self signed certificate
+	
+	-install apache2 openssl
+	- sudo a2enmod ssl
+	- sudo a2ensite default-ssl
+	- create dir in /etc/apache2/ssl
+	- sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache2.key -out /etc/apache2/ssl/apache.crt
+	
